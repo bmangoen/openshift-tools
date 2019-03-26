@@ -1,0 +1,6 @@
+- name: Backup etcd
+  hosts: etcd
+  tasks:
+  - import_role:
+      name: etcd
+      tasks_from: backup.yml

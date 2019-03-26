@@ -1,0 +1,2 @@
+- include: openshift-master/backup.yml
+- include: openshift-etcd/backup.yml

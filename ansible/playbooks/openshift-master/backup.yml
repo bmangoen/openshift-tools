@@ -1,0 +1,21 @@
+- name: backup master nodes
+  hosts: masters
+  tasks:
+  - name: set /etc/origin backup directory
+    set_fact:
+      origin_backup_dir: "{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}{{ ansible_date_time.second }}/etc-origin"
+  - debug:
+     msg: "{{ backup_srv_path }}/{{ inventory_hostname }}/{{ origin_backup_dir }}"
+  - name: create backup directories
+    file:
+      path: "{{ backup_srv_path }}/{{ inventory_hostname }}/{{ origin_backup_dir }}"
+      state: directory
+      recurse: true
+    delegate_to: localhost
+  - name: synchronize /etc/origin contents
+    synchronize:
+      src: /etc/origin/
+      dest: "{{ backup_srv_path }}/{{ inventory_hostname }}/{{ origin_backup_dir }}"
+      mode: pull
+      archive: false
+      recursive: true

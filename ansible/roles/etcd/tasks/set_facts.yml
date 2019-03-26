@@ -1,0 +1,4 @@
+- name: set facts for restoring etcd
+  set_fact:
+    etcd_config_restore_dir: "{{ etcd_backup_date }}/etcd/config"
+    etcd_data_restore_dir: "{{ etcd_backup_date }}/etcd/data"

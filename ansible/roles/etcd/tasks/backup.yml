@@ -1,0 +1,40 @@
+- name: create backup directories
+  file:
+    path: "{{ backup_srv_path }}/{{ inventory_hostname }}/{{ item }}/"
+    state: directory
+    recurse: true
+  loop:
+  - "{{ etcd_config_backup_dir }}"
+  - "{{ etcd_data_backup_dir }}"
+  delegate_to: localhost
+
+- name: synchronize configuration files
+  synchronize:
+    src: /etc/etcd/
+    dest: "{{ backup_srv_path }}/{{ inventory_hostname }}/{{ etcd_config_backup_dir }}/"
+    mode: pull
+    archive: false
+    recursive: true
+  
+- block:
+  - name: get etcd endpoints
+    shell: "grep https /etc/origin/node/pods/etcd.yaml  | cut -d '/' -f3"
+    register: etcd_endpoints
+
+  - debug:
+      msg: "{{ etcd_endpoints.stdout }}"
+  
+  - name: save etcd snapshot to /var/lib/etcd/ (only on the etcd[0] node)
+    shell: "ETCDCTL_API=3 etcdctl --cert /etc/etcd/peer.crt --key /etc/etcd/peer.key --cacert /etc/etcd/ca.crt --endpoints {{ etcd_endpoints.stdout }} snapshot save /var/lib/etcd/snapshot.db"
+    when: etcd_endpoints is defined
+  
+  - name: synchronize configuration files
+    synchronize:
+      src: /var/lib/etcd/snapshot.db
+      dest: "{{ backup_srv_path }}/{{ inventory_hostname }}/{{ etcd_data_backup_dir }}/"
+      mode: pull
+      archive: false
+      recursive: true
+    when: etcd_endpoints is defined
+
+  when: inventory_hostname == groups['etcd'][0]
