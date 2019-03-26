@@ -16,7 +16,7 @@ Execute the following ansible command to backup all OCP components
 
 ```shell
 ansible-playbook playbooks/backup_cluster.yml \
-                 -i /etc/ansible/hosts
+                 -i /etc/ansible/hosts \
                  -e backup_srv_path=local_mount_backup_path
 ```
 
