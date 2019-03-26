@@ -4,7 +4,6 @@
   - import_role:
       name: openshift_facts
       tasks_from: backup
-    delegate_to: localhost
     tags: always
 
 - include: openshift-node/backup.yml
