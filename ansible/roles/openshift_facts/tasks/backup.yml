@@ -2,8 +2,9 @@
   command: date +%Y%m%d-%H%M%S
   register: current_date
   delegate_to: localhost
+  run_once: true
 
 - name: set backup facts
   set_fact:
-    openshift_backup_date: "{{ current_date.stdout }}"
+    openshift_backup_date: "{{ current_date }}"
     openshift_restore_date: ""
