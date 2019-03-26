@@ -1,8 +1,7 @@
 - name: get the date
-  command: date +%Y%m%d-%H%M%S
+  command: date +%Y%m%d-%H%M
   register: current_date
   delegate_to: localhost
-  run_once: true
 
 - name: set backup facts
   set_fact:
