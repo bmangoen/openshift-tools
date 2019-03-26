@@ -5,5 +5,5 @@
 
 - name: set backup facts
   set_fact:
-    openshift_backup_date: "{{ current_date }}"
+    openshift_backup_date: "{{ current_date.stdout }}"
     openshift_restore_date: ""
