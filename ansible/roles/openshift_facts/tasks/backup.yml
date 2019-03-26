@@ -1,5 +1,5 @@
 - name: get the date
-  command: date +%Y%m%d-%s
+  command: date +%Y%m%d-%H%M%S
   register: current_date
   delegate_to: localhost
 
