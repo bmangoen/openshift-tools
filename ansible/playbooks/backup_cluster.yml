@@ -4,6 +4,7 @@
   - import_role:
       name: openshift_facts
       tasks_from: backup
+    tags: always
 
 - include: openshift-node/backup.yml
   tags: node-config
