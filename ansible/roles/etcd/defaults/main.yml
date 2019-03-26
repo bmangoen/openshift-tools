@@ -3,9 +3,6 @@
 
 # backup vars
 
-#TODO delete these vars into this role (extra vars?)
-backup_srv_path: "/srv/backup"
-
 #TODO: modify dir names?
 etcd_config_backup_dir: "{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}{{ ansible_date_time.second }}/etcd/config"
 etcd_data_backup_dir: "{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}{{ ansible_date_time.second }}/etcd/data"

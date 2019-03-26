@@ -1,2 +1,4 @@
-- include: openshift-master/backup.yml
+- include: openshift-node/backup.yml
+  tags: node-config
 - include: openshift-etcd/backup.yml
+  tags: etcd

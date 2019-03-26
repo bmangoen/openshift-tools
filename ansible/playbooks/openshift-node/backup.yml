@@ -1,5 +1,5 @@
-- name: backup master nodes
-  hosts: masters
+- name: backup nodes configuration files
+  hosts: nodes
   tasks:
   - name: set /etc/origin backup directory
     set_fact:
