@@ -1,4 +1,6 @@
-# Openshift tools
+# Ansible
+
+Ansible plays to manage OCP cluster
 
 ## Backup
 
