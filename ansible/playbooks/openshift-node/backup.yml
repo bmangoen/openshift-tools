@@ -1,3 +1,4 @@
+#TODO: create role for these tasks?
 - name: backup nodes configuration files
   hosts: nodes
   tasks:
@@ -10,8 +11,6 @@
   - name: set /etc/origin backup directory
     set_fact:
       origin_backup_dir: "{{ openshift_backup_date }}/etc-origin"
-  - debug:
-     msg: "{{ backup_srv_path }}/{{ inventory_hostname }}/{{ origin_backup_dir }}"
   - name: create backup directories
     file:
       path: "{{ backup_srv_path }}/{{ inventory_hostname }}/{{ origin_backup_dir }}"

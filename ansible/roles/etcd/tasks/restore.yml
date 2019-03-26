@@ -42,9 +42,6 @@
   shell: "grep -i {{ etcd_initial_advertise_peer_urls_str }} /etc/etcd/etcd.conf | awk -F\"{{ etcd_initial_advertise_peer_urls_str }}\" '{print $2}'"
   register: etcd_initial_advertise_peer_urls
 
-- debug:
-    msg: "{{ etcd_initial_cluster.stdout }} ####-#### {{ etcd_initial_cluster_token.stdout }} ####-#### {{ etcd_initial_advertise_peer_urls.stdout }}"
-
 - name: restore etcd data
   shell: "ETCDCTL_API=3 etcdctl snapshot restore {{ tempdir.path }}/snapshot.db --data-dir /var/lib/etcd/ --name {{ inventory_hostname }} --initial-cluster {{ etcd_initial_cluster.stdout }} --initial-cluster-token {{ etcd_initial_cluster_token.stdout }} --initial-advertise-peer-urls {{ etcd_initial_advertise_peer_urls.stdout }} --skip-hash-check=true"
 
