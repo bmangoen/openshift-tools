@@ -1,9 +1,12 @@
 - name: backup nodes configuration files
   hosts: nodes
   tasks:
+  - import_role:
+      name: openshift_facts
+      tasks_from: backup
   - name: set /etc/origin backup directory
     set_fact:
-      origin_backup_dir: "{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}{{ ansible_date_time.second }}/etc-origin"
+      origin_backup_dir: "{{ openshift_backup_date }}/etc-origin"
   - debug:
      msg: "{{ backup_srv_path }}/{{ inventory_hostname }}/{{ origin_backup_dir }}"
   - name: create backup directories

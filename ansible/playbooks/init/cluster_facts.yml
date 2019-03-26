@@ -1,0 +1,4 @@
+- name: initialize cluster facts
+  hosts: all
+  roles:
+  - role: openshift_facts

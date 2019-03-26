@@ -2,5 +2,8 @@
   hosts: etcd
   tasks:
   - import_role:
+      name: openshift_facts
+      tasks_from: backup
+  - import_role:
       name: etcd
-      tasks_from: backup.yml
+      tasks_from: backup

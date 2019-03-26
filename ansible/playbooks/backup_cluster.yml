@@ -1,4 +1,10 @@
-- include: openshift-node/backup.yml
-  tags: node-config
-- include: openshift-etcd/backup.yml
-  tags: etcd
+- name: cluster backup
+  hosts: all
+  tasks:
+  - import_role:
+      name: openshift_facts
+      tasks_from: backup
+  - include: openshift-node/backup.yml
+    tags: node-config
+  - include: openshift-etcd/backup.yml
+    tags: etcd

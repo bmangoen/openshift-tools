@@ -4,10 +4,13 @@
 # backup vars
 
 #TODO: modify dir names?
-etcd_config_backup_dir: "{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}{{ ansible_date_time.second }}/etcd/config"
-etcd_data_backup_dir: "{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}{{ ansible_date_time.second }}/etcd/data"
+etcd_config_backup_dir: "{{ openshift_backup_date }}/etcd/config"
+etcd_data_backup_dir: "{{ openshift_backup_date }}/etcd/data"
 
 # restore vars
+etcd_config_restore_dir: "{{ openshift_restore_date }}/etcd/config"
+etcd_data_restore_dir: "{{ openshift_restore_date }}/etcd/data"
+
 etcd_initial_cluster_str: "ETCD_INITIAL_CLUSTER="
 etcd_initial_cluster_token_str: "ETCD_INITIAL_CLUSTER_TOKEN="
 etcd_initial_advertise_peer_urls_str: "ETCD_INITIAL_ADVERTISE_PEER_URLS="

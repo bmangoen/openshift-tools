@@ -1,0 +1,3 @@
+- name: set restore facts
+  set_fact:
+    openshift_backup_date: ""
