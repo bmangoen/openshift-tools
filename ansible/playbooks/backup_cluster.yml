@@ -1,5 +1,5 @@
 - name: cluster backup
-  hosts: localhost
+  hosts: all
   tasks:
   - set_fact:
       openshift_backup_date: "{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}{{ ansible_date_time.second }}"

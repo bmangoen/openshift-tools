@@ -1,4 +1,9 @@
+- name: get the date
+  command: date +%Y%m%d-%s
+  register: current_date
+  delegate_to: localhost
+
 - name: set backup facts
   set_fact:
-    openshift_backup_date: "{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}{{ ansible_date_time.second }}"
+    openshift_backup_date: "{{ current_date.stdout }}"
     openshift_restore_date: ""
