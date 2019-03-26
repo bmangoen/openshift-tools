@@ -16,7 +16,7 @@ Execute the following ansible command to backup all OCP components
 
 ```shell
 ansible-playbook playbooks/backup_cluster.yml \
-                 -i inventory_hosts_file_location \
+                 -i /etc/ansible/hosts \
                  -e backup_srv_path=local_mount_backup_path
 ```
 
@@ -26,9 +26,9 @@ Add the tag **node-config**  to backup only /etc/origin directory (and subdirect
 
 ```shell
 ansible-playbook playbooks/backup_cluster.yml \
-                 -i inventory_hosts_file_location \
-                 -e backup_srv_path=local_mount_backup_path \
-                 -t node-config
+                 -i /etc/ansible/hosts \
+                 -t node-config \
+                 -e backup_srv_path=local_mount_backup_path
 ```
 
 ### etcd
@@ -37,9 +37,9 @@ Add the tag **etcd**  to backup only etcd
 
 ```shell
 ansible-playbook playbooks/backup_cluster.yml \
-                 -i inventory_hosts_file_location \
-                 -e backup_srv_path=local_mount_backup_path \
-                 -t etcd
+                 -i /etc/ansible/hosts \
+                 -t etcd \
+                 -e backup_srv_path=local_mount_backup_path
 ```
 
 ## Restore
@@ -58,8 +58,8 @@ Execute the following ansible command to backup all OCP components
 
 ```shell
 ansible-playbook playbooks/restore_cluster.yml \
-                 -i inventory_hosts_file_location \
-                 -e backup_srv_path=local_mount_restore_path \
+                 -i /etc/ansible/hosts \
+                 -e backup_srv_path=local_mount_restore_path
                  -e openshift_restore_date=backup_date
 ```
 
@@ -69,8 +69,8 @@ Add the tag **etcd**  to restore only etcd
 
 ```shell
 ansible-playbook playbooks/restore_cluster.yml \
-                 -i inventory_hosts_file_location \
-                 -e backup_srv_path=local_mount_restore_path \
-                 -e openshift_restore_date=backup_date \
-                 -t etcd
+                 -i /etc/ansible/hosts \
+                 -t etcd \
+                 -e backup_srv_path=local_mount_restore_path
+                 -e openshift_restore_date=backup_date
 ```
