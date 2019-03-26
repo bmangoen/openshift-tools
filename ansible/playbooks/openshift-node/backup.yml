@@ -4,7 +4,7 @@
   tasks:
   - import_role:
       name: openshift_facts
-      tasks_from: backup
+      tasks_from: backup.yml
   - name: set /etc/origin backup directory
     set_fact:
       origin_backup_dir: "{{ openshift_backup_date }}/etc-origin"
