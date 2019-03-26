@@ -1,0 +1,6 @@
+- name: install required packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+  - rsync
