@@ -1,3 +1,5 @@
+- include: prereqs.yml
+
 - name: create backup directories
   file:
     path: "{{ backup_srv_path }}/{{ inventory_hostname }}/{{ item }}/"
