@@ -1,10 +1,10 @@
 - name: cluster backup
-  hosts: localhost
+  hosts: all
+  vars:
+    openshift_backup_date: "{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}{{ ansible_date_time.second }}"
   tasks:
-  - import_role:
-      name: openshift_facts
-      tasks_from: backup
-    tags: always
+  - debug:
+      msg: "{{ openshift_backup_date }}"
 
 - include: openshift-node/backup.yml
   tags: node-config
