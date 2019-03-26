@@ -1,5 +1,5 @@
 - name: cluster backup
-  hosts: all
+  hosts: localhost
   tasks:
   - import_role:
       name: openshift_facts

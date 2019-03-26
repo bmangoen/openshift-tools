@@ -2,4 +2,3 @@
   set_fact:
     openshift_backup_date: "{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}{{ ansible_date_time.minute }}{{ ansible_date_time.second }}"
     openshift_restore_date: ""
-  delegate_to: localhost
