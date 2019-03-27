@@ -1,3 +1,5 @@
+- include_tasks: prereqs.yml
+
 - name: restore /etc/etcd/etcd.conf file
   synchronize:
     src: "{{ backup_srv_path }}/{{ inventory_hostname }}/{{ etcd_config_restore_dir }}/etcd.conf"

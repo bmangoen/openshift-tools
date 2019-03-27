@@ -1,4 +1,4 @@
-- import_playbook: prereqs.yml
+- include_tasks: prereqs.yml
 
 - name: create backup directories
   file:
