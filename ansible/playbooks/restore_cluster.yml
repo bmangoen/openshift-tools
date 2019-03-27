@@ -1,2 +1,2 @@
-- include: openshift-etcd/restore.yml
+- import_playbook: openshift-etcd/restore.yml
   tags: etcd
