@@ -1,0 +1,17 @@
+- include_tasks: prereqs.yml
+
+- name: restore /etc/origin/node/ files
+  synchronize:
+    src: "{{ backup_srv_path }}/{{ inventory_hostname }}/{{ origin_backup_dir }}/node/{{ item }}"
+    dest: "/etc/origin/node/{{ item }}"
+    archive: false
+    recursive: true
+  loop:
+  - node-config.yaml
+  - pods/
+
+- name: restart service atomic-openshift-node
+  service:
+    name: atomic-openshift-node
+    state: restarted
+    enabled: true

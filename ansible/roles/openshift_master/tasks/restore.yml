@@ -1,0 +1,18 @@
+- include_tasks: prereqs.yml
+
+- name: restore /etc/origin/master/ files
+  synchronize:
+    src: "{{ backup_srv_path }}/{{ inventory_hostname }}/{{ origin_backup_dir }}/master/{{ item }}"
+    dest: "/etc/origin/master/{{ item }}"
+    archive: false
+    recursive: true
+  loop:
+  - master-config.yaml
+  - master.env
+  - scheduler.json
+
+- name: restart master api
+  shell: "master-restart api"
+
+- name: restart master controllers
+  shell: "master-restart controllers"

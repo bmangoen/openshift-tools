@@ -1,2 +1,8 @@
 - import_playbook: openshift-etcd/restore.yml
   tags: etcd
+
+- import_playbook: openshift-master/restore.yml
+  tags: master
+
+- import_playbook: openshift-nodes/restore.yml
+  tags: node
