@@ -1,2 +1,4 @@
 ---
-# defaults file for openshift_node
+# defaults file for openshift_master
+origin_backup_dir: "{{ openshift_backup_date }}/etc-origin"
+origin_node_config_dir: "{{ openshift_restore_date }}/etc-origin/node"

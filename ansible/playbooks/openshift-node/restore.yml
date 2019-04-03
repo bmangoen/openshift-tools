@@ -3,5 +3,5 @@
   hosts: nodes
   tasks:
   - import_role:
-      name: openshift-node
+      name: openshift_node
       tasks_from: restore

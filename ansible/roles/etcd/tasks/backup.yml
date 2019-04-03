@@ -17,6 +17,7 @@
     mode: pull
     archive: false
     recursive: true
+    links: true
   
 - block:
   - name: get etcd endpoints

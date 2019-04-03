@@ -1,7 +1,7 @@
 #TODO: create role for these tasks?
 - name: restore master nodes configuration files
-  hosts: nodes
+  hosts: masters
   tasks:
   - import_role:
-      name: openshift-master
+      name: openshift_master
       tasks_from: restore

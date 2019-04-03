@@ -1,13 +1,25 @@
 - include_tasks: prereqs.yml
 
+#TODO: delete this or not?
+#- name: restore /etc/origin/node/ files
+#  synchronize:
+#    src: "{{ backup_srv_path }}/{{ inventory_hostname }}/{{ origin_node_config_dir }}/"
+#    dest: "/etc/origin/node/"
+#    archive: false
+#    recursive: true
+
 - name: restore /etc/origin/node/ files
   synchronize:
-    src: "{{ backup_srv_path }}/{{ inventory_hostname }}/{{ origin_backup_dir }}/node/{{ item }}"
+    src: "{{ backup_srv_path }}/{{ inventory_hostname }}/{{ origin_node_config_dir }}/{{ item }}"
     dest: "/etc/origin/node/{{ item }}"
     archive: false
     recursive: true
+    links: true
+    delete: true
   loop:
   - node-config.yaml
+  - node.kubeconfig
+  - certificates/
   - pods/
 
 - name: restart service atomic-openshift-node
