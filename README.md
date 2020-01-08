@@ -4,6 +4,10 @@ Tools to manage OCP cluster
 
 ## Ansible Playbooks
 
-* [Backup cluster](https://github.com/bmangoen/openshift-tools/tree/master/ansible#backup)
+### OpenShift 3.X
 
-* [Restore cluster](https://github.com/bmangoen/openshift-tools/tree/master/ansible#restore)
+* [Backup cluster](https://github.com/bmangoen/openshift-tools/tree/master/ocp3/ansible#backup)
+
+* [Restore cluster](https://github.com/bmangoen/openshift-tools/tree/master/ocp3/ansible#restore)
+
+### OpenShift 4.X
