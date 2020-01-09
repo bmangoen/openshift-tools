@@ -1,5 +1,5 @@
 ---
-- name: "retrive the channel"
+- name: "retrieve the channel"
   shell: "oc get packagemanifest elasticsearch-operator -n {{ openshift_marketplace_namespace }} -o jsonpath='{.status.channels[].name}'"
   register: "r_elasticsearch_operator_channel"
 
