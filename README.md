@@ -12,4 +12,4 @@ Tools to manage OCP cluster
 
 ### OpenShift 4.X
 
-* [Deploy Cluster Logging](./ansible/README.md)
+* [Deploy Cluster Logging](./ansible/README.md#install-cluster-logging)
