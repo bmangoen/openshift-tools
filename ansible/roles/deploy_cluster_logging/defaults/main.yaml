@@ -1,4 +1,6 @@
 ---
+# OpenShift default vars
+openshift_kubeconfig_path: "{{ ansible_env.HOME }}/.kube/config"
 # Cluster logging default vars
 
 cluster_logging_manifests_dir_path: "{{ ansible_env.HOME }}/cluster_logging_manifests"
