@@ -1,2 +1,2 @@
 ---
-- import_tasks: create_namespace.yaml
+- import_tasks: create_namespaces.yaml
