@@ -26,4 +26,4 @@ git clone https://github.com/bmangoen/openshift-tools.git
 cd openshift-tools/ansible && ansible-playbook playbooks/ocp4_deploy_cluster_logging.yaml
 ```
 
-**NB**: You can also overwrite default variables to customize the deployment (cf. [role default variables](./roles/README.md))
+**NB**: You can also overwrite default variables to customize the deployment (cf. [role default variables](./roles/deploy_cluster_logging/))
