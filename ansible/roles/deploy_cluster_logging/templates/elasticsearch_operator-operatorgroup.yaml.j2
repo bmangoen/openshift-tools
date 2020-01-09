@@ -4,8 +4,4 @@ kind: OperatorGroup
 metadata:
   name: {{ elasticsearch_operator_operatorgroup.name }}
   namespace: {{ elasticsearch_operator_namespace.name }}
-spec:
-  targetNamespaces:
-{% for namespace in elasticsearch_operator_operatorgroup.spec.targetNamespaces %}
-  - {{ namespace }}
-{% endfor %}
+spec: {}
