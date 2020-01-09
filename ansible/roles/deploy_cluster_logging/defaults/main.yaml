@@ -37,5 +37,5 @@ elasticsearch_operator_operatorgroup:
   name: elasticsearch-operator
   spec:
     targetNamespaces:
-    - elasticsearch-operator
-    - {{ openshift_logging_namespace.name }}
+    - "elasticsearch-operator"
+    - "{{ openshift_logging_namespace.name }}"
