@@ -1,2 +1,3 @@
 ---
+- import_tasks: create_namespaces.yaml
 - import_tasks: install_elasticsearch_operator.yaml
