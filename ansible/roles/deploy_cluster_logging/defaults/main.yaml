@@ -30,6 +30,7 @@ elasticsearch_operator_operatorgroup:
 
 elasticsearch_operator_subscription:
   name: elasticsearch-subscription
+  
 # Openshift Logging default vars
 
 openshift_logging_namespace:
