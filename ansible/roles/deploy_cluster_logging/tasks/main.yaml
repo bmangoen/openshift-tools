@@ -1,2 +1,2 @@
 ---
-# tasks file for deploy_cluster_logging
+- include_tasks: create_namespace.yaml
