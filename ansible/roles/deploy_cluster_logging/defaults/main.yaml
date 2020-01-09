@@ -1,16 +1,15 @@
 ---
 # OpenShift default vars
 openshift_kubeconfig_path: "{{ ansible_env.HOME }}/.kube/config"
-
 openshift_marketplace_namespace: "openshift-marketplace"
 
-# OpenShift cluster logging default vars
+# OpenShift cluster logging
 openshift_cluster_logging_manifests_dir_path: "{{ ansible_env.HOME }}/cluster_logging_manifests"
 openshift_cluster_logging_manifest_filenames:
   - "elasticsearch_operator-namespace"
   - "openshift_logging-namespace"
 
-# Elasticsearch default vars
+# Elasticsearch operator
 elasticsearch_operator_manifest_filenames:
   - "elasticsearch_operator-operatorgroup"
   - "elasticsearch_operator-subscription"
@@ -29,7 +28,7 @@ elasticsearch_operator_operatorgroup:
 elasticsearch_operator_subscription:
   name: elasticsearch-subscription
 
-# Cluster Logging default vars
+# Cluster Logging operator
 cluster_logging_operator_manifest_filenames:
   - "cluster_logging_operator-operatorgroup"
   - "cluster_logging_operator-subscription"
@@ -50,3 +49,26 @@ cluster_logging_operator_operatorgroup:
 
 cluster_logging_operator_subscription:
   name: "{{ cluster_logging_operator_namespace.name }}-subscription"
+
+# Cluster logging instance
+cluster_logging_instance_manifest_filename: "cluster_logging_instance"
+cluster_logging_instance_name: "instance"
+
+elasticsearch_resources:
+  limits_memory: "6Gi"
+  requests_memory: "6Gi"
+elasticsearch_nodecount: 1
+elasticsearch_nodeselector:
+  - "node-role.kubernetes.io/infra: ''"
+elasticsearch_redundancypolicy: "ZeroRedundancy"
+elasticsearch_storage:
+  storageclassname: "gp2"
+  size: "50Gi"
+
+kibana_replicas: 1
+kibana_nodeselector:
+  - "node-role.kubernetes.io/infra: ''"
+
+curator_schedule: "30 3 * * *"
+curator_nodeselector:
+  - "node-role.kubernetes.io/infra: ''"
