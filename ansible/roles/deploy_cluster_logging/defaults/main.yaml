@@ -1,20 +1,15 @@
 ---
 # OpenShift default vars
 openshift_kubeconfig_path: "{{ ansible_env.HOME }}/.kube/config"
+
+openshift_marketplace_namespace: "openshift-marketplace"
+
 # Cluster logging default vars
 
 cluster_logging_manifests_dir_path: "{{ ansible_env.HOME }}/cluster_logging_manifests"
 cluster_logging_manifest_filenames:
   - "elasticsearch_operator-namespace"
   - "openshift_logging-namespace"
-
-# Elasticsearch default vars
-
-elasticsearch_operator_namespace:
-  name: "elasticsearch-operator"
-  labels:
-    - 'openshift.io/cluster-logging: "true"'
-    - 'openshift.io/cluster-monitoring: "true"'
 
 # Openshift Logging default vars
 
@@ -23,3 +18,24 @@ openshift_logging_namespace:
   labels:
     - 'openshift.io/cluster-logging: "true"'
     - 'openshift.io/cluster-monitoring: "true"'
+
+# Elasticsearch default vars
+elasticsearch_operator_manifest_filenames:
+  - "elasticsearch_operator-namespace"
+  - "elasticsearch_operator-operatorgroup"
+  - "elasticsearch_operator-subscription"
+  - "elasticsearch_operator-role"
+  - "elasticsearch_operator-rolebinding"
+
+elasticsearch_operator_namespace:
+  name: "elasticsearch-operator"
+  labels:
+    - 'openshift.io/cluster-logging: "true"'
+    - 'openshift.io/cluster-monitoring: "true"'
+
+elasticsearch_operator_operatorgroup:
+  name: elasticsearch-operator
+  spec:
+    targetNamespaces:
+    - elasticsearch-operator
+    - {{ openshift_logging_namespace.name }}

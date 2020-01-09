@@ -4,7 +4,7 @@
     path: "{{ cluster_logging_manifests_dir_path }}"
     state: directory
 
-- name: "create namespace yaml files"
+- name: "create namespace manifests files"
   template:
     src: "{{ item }}.yaml.j2"
     dest: "{{ cluster_logging_manifests_dir_path }}/{{ item }}.yaml"
