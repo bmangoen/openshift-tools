@@ -1,3 +1,4 @@
 ---
 - import_tasks: create_namespaces.yaml
 - import_tasks: install_elasticsearch_operator.yaml
+- import_tasks: install_cluster_logging_operator.yaml
