@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{ openshift_logging_namespace.name }}
+  name: {{ cluster_logging_operator_namespace.name }}
   annotations:
     openshift.io/node-selector: ""
   labels:
-{% for label in openshift_logging_namespace.labels %}
+{% for label in cluster_logging_operator_namespace.labels %}
     {{ label }}
 {% endfor %}
