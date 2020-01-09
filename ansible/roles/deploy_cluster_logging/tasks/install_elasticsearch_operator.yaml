@@ -4,7 +4,7 @@
   register: "r_elasticsearch_operator_channel"
 
 - name: "set facts"
-  set_facts:
+  set_fact:
     elasticsearch_operator_channel: "{{ r_elasticsearch_operator_channel.stdout }}"
 
 - name: "create Elasticsearch manifest files"
