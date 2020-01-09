@@ -1,0 +1,11 @@
+---
+- name: "create Cluster Logging instance manifest file"
+  template:
+    src: "{{ cluster_logging_instance_manifest_filename }}.yaml.j2"
+    dest: "{{ openshift_cluster_logging_manifests_dir_path }}/{{ cluster_logging_instance_manifest_filename }}.yaml"
+
+- name: "create Cluster Logging instance into OpenShift cluster"
+  k8s:
+    kubeconfig: "{{ openshift_kubeconfig_path }}"
+    src: "{{ openshift_cluster_logging_manifests_dir_path }}/{{ cluster_logging_instance_manifest_filename }}.yaml"
+    state: present

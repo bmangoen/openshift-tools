@@ -1,0 +1,45 @@
+---
+apiVersion: logging.openshift.io/v1
+kind: ClusterLogging
+metadata:
+  name: instance
+  namespace: {{ cluster_logging_operator_namespace.name }}
+spec:
+  managementState: Managed
+  logStore:
+    type: elasticsearch
+    elasticsearch:
+      resources:
+        limits:
+          memory: {{ elasticsearch_resources.limits_memory }}
+        requests:
+          memory: {{ elasticsearch_resources.requests_memory }}
+      nodeCount: {{ elasticsearch_nodecount }}
+      nodeSelector:
+{% for label in elasticsearch_nodeselector %}
+        {{ label }}
+{% endfor %}
+      redundancyPolicy: {{ elasticsearch_redundancypolicy }}
+      storage:
+        storageClassName: {{ elasticsearch_storage.storageclassname }}
+        size: {{ elasticsearch_storage.size }}
+  visualization:
+    type: kibana
+    kibana:
+      replicas: {{ kibana_replicas }}
+      nodeSelector:
+{% for label in kibana_nodeselector %}
+        {{ label }}
+{% endfor %}
+  curation:
+    type: curator
+    curator:
+      schedule: {{ curator_schedule }}
+      nodeSelector:
+{% for label in curator_nodeselector %}
+        {{ label }}
+{% endfor %}
+  collection:
+    logs:
+      type: fluentd
+      fluentd: {}

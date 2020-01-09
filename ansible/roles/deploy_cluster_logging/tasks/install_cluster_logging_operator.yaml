@@ -1,0 +1,21 @@
+---
+- name: "retrieve the channel"
+  shell: "oc --config {{ openshift_kubeconfig_path }} get packagemanifest cluster-logging -n {{ openshift_marketplace_namespace }} -o jsonpath='{.status.channels[].name}'"
+  register: "r_cluster_logging_operator_channel"
+
+- name: "set facts"
+  set_fact:
+    cluster_logging_operator_channel: "{{ r_cluster_logging_operator_channel.stdout }}"
+
+- name: "create Cluster Logging manifest files"
+  template:
+    src: "{{ item }}.yaml.j2"
+    dest: "{{ openshift_cluster_logging_manifests_dir_path }}/{{ item }}.yaml"
+  loop: "{{ cluster_logging_operator_manifest_filenames }}"
+
+- name: "create Cluster Logging objects into OpenShift cluster"
+  k8s:
+    kubeconfig: "{{ openshift_kubeconfig_path }}"
+    src: "{{ openshift_cluster_logging_manifests_dir_path }}/{{ item }}.yaml"
+    state: present
+  loop: "{{ cluster_logging_operator_manifest_filenames }}"
