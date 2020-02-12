@@ -55,12 +55,12 @@ cluster_logging_instance_manifest_filename: "cluster_logging_instance"
 cluster_logging_instance_name: "instance"
 
 elasticsearch_resources:
-  limits_memory: "6Gi"
-  requests_memory: "6Gi"
+  limits_memory: "16Gi"
+  requests_memory: "16Gi"
 elasticsearch_nodecount: 1
 elasticsearch_nodeselector:
   - "node-role.kubernetes.io/infra: ''"
-elasticsearch_redundancypolicy: "ZeroRedundancy"
+elasticsearch_redundancypolicy: "MultipleRedundancy"
 elasticsearch_storage:
   storageclassname: "gp2"
   size: "50Gi"
