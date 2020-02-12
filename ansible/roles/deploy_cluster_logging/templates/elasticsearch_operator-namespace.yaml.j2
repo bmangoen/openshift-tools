@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ elasticsearch_operator_namespace.name }}
+  annotations:
+    openshift.io/node-selector: ""
+  labels:
+{% for label in elasticsearch_operator_namespace.labels %}
+    {{ label }}
+{% endfor %}

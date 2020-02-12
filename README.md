@@ -11,3 +11,5 @@ Tools to manage OCP cluster
 * [Restore cluster](https://github.com/bmangoen/openshift-tools/tree/master/ocp3/ansible#restore)
 
 ### OpenShift 4.X
+
+* [Deploy Cluster Logging](./ansible/README.md#install-cluster-logging)

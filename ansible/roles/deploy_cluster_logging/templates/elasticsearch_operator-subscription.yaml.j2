@@ -1,0 +1,12 @@
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: "{{ elasticsearch_operator_subscription.name }}"
+  namespace: {{ elasticsearch_operator_namespace.name }}
+spec:
+  channel: "{{ elasticsearch_operator_channel }}"
+  installPlanApproval: "Automatic"
+  source: "redhat-operators"
+  sourceNamespace: "{{ openshift_marketplace_namespace }}"
+  name: "elasticsearch-operator"

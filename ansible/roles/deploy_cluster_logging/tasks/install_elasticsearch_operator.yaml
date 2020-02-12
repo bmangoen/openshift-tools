@@ -1,0 +1,21 @@
+---
+- name: "retrieve the channel"
+  shell: "oc get packagemanifest elasticsearch-operator -n {{ openshift_marketplace_namespace }} -o jsonpath='{.status.channels[].name}'"
+  register: "r_elasticsearch_operator_channel"
+
+- name: "set facts"
+  set_fact:
+    elasticsearch_operator_channel: "{{ r_elasticsearch_operator_channel.stdout }}"
+
+- name: "create Elasticsearch manifest files"
+  template:
+    src: "{{ item }}.yaml.j2"
+    dest: "{{ openshift_cluster_logging_manifests_dir_path }}/{{ item }}.yaml"
+  loop: "{{ elasticsearch_operator_manifest_filenames }}"
+
+- name: "create elasticsearch objects into OpenShift cluster"
+  k8s:
+    kubeconfig: "{{ openshift_kubeconfig_path }}"
+    src: "{{ openshift_cluster_logging_manifests_dir_path }}/{{ item }}.yaml"
+    state: present
+  loop: "{{ elasticsearch_operator_manifest_filenames }}"

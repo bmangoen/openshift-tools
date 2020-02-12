@@ -1,0 +1,74 @@
+---
+# OpenShift default vars
+openshift_kubeconfig_path: "{{ ansible_env.HOME }}/.kube/config"
+openshift_marketplace_namespace: "openshift-marketplace"
+
+# OpenShift cluster logging
+openshift_cluster_logging_manifests_dir_path: "{{ ansible_env.HOME }}/cluster_logging_manifests"
+openshift_cluster_logging_manifest_filenames:
+  - "elasticsearch_operator-namespace"
+  - "openshift_logging-namespace"
+
+# Elasticsearch operator
+elasticsearch_operator_manifest_filenames:
+  - "elasticsearch_operator-operatorgroup"
+  - "elasticsearch_operator-subscription"
+  - "elasticsearch_operator-role"
+  - "elasticsearch_operator-rolebinding"
+
+elasticsearch_operator_namespace:
+  name: "elasticsearch-operator"
+  labels:
+    - 'openshift.io/cluster-logging: "true"'
+    - 'openshift.io/cluster-monitoring: "true"'
+
+elasticsearch_operator_operatorgroup:
+  name: elasticsearch-operator
+
+elasticsearch_operator_subscription:
+  name: elasticsearch-subscription
+
+# Cluster Logging operator
+cluster_logging_operator_manifest_filenames:
+  - "cluster_logging_operator-operatorgroup"
+  - "cluster_logging_operator-subscription"
+  - "cluster_logging_operator-role"
+  - "cluster_logging_operator-rolebinding"
+
+cluster_logging_operator_namespace:
+  name: "openshift-logging"
+  labels:
+    - 'openshift.io/cluster-logging: "true"'
+    - 'openshift.io/cluster-monitoring: "true"'
+
+cluster_logging_operator_operatorgroup:
+  name: "{{ cluster_logging_operator_namespace.name }}-operatorgroup"
+  spec:
+    targetNamespaces:
+    - "{{ cluster_logging_operator_namespace.name }}"
+
+cluster_logging_operator_subscription:
+  name: "{{ cluster_logging_operator_namespace.name }}-subscription"
+
+# Cluster logging instance
+cluster_logging_instance_manifest_filename: "cluster_logging_instance"
+cluster_logging_instance_name: "instance"
+
+elasticsearch_resources:
+  limits_memory: "16Gi"
+  requests_memory: "16Gi"
+elasticsearch_nodecount: 1
+elasticsearch_nodeselector:
+  - "node-role.kubernetes.io/infra: ''"
+elasticsearch_redundancypolicy: "MultipleRedundancy"
+elasticsearch_storage:
+  storageclassname: "gp2"
+  size: "50Gi"
+
+kibana_replicas: 1
+kibana_nodeselector:
+  - "node-role.kubernetes.io/infra: ''"
+
+curator_schedule: "30 3 * * *"
+curator_nodeselector:
+  - "node-role.kubernetes.io/infra: ''"
