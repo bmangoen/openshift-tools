@@ -4,7 +4,12 @@ Role that deploys the Cluster Logging on OpenShift 4.
 
 ## Requirements
 
-None
+The below requirements are needed on the host that executes the module `k8s`:
+
+- python >= 2.7
+- openshift >= 0.6
+- PyYAML >= 3.11
+
 
 ## Role Variables
 
