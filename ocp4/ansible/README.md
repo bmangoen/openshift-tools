@@ -10,6 +10,12 @@ Deployment of [Cluster Logging](https://docs.openshift.com/container-platform/4.
 
 - `Ansible` has to be installed on a server that can access to the OCP cluster API.
 
+- `openshift`  Ansible module has to be installed
+
+```shell
+pip install openshift
+```
+
 - Configuration file to authenticate to the OCP cluster via the client `oc` (by default, using `~/.kube/config`).
 
 ### Usage
