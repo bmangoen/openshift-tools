@@ -4,10 +4,12 @@ export CLUSTER_NAME=${CLUSTER_NAME:-"ocp-cluster"}
 export INSTALL_CONFIG_DIR=${INSTALL_CONFIG_DIR:-"$HOME/$CLUSTER_NAME"}
 export CALICO_MANIFESTS_URL=${CALICO_MANIFESTS_URL:-"https://docs.projectcalico.org/manifests/ocp"}
 
+export OPENSHIFT_INSTALL_CMD=${OPENSHIFT_INSTALL_CMD:-"openshift-install"}
+
 command -v sed >/dev/null 2>&1 || { echo >&2 "can't find sed command.  Aborting."; exit 1; }
 command -v curl >/dev/null 2>&1 || { echo >&2 "can't find curl command.  Aborting."; exit 1; }
 command -v declare >/dev/null 2>&1 || { echo >&2 "can't find declare command.  Aborting."; exit 1; }
-command -v openshift-install >/dev/null 2>&1 || { echo >&2 "can't find openshift-install command.  Aborting."; exit 1; }
+command -v ${OPENSHIFT_INSTALL_CMD} >/dev/null 2>&1 || { echo >&2 "can't find openshift-install command.  Aborting."; exit 1; }
 
 function download:calico:manifests() {
     if [ $# -ne 2 ];
@@ -26,7 +28,7 @@ function download:calico:manifests() {
 
 sed -i 's/OpenShiftSDN/Calico/' ${INSTALL_CONFIG_DIR}/install-config.yaml
 
-openshift-install create manifests --dir ${INSTALL_CONFIG_DIR}
+${OPENSHIFT_INSTALL_CMD} create manifests --dir ${INSTALL_CONFIG_DIR}
 
 #declare -A manifests=( [crds]="01-crd-installation.yaml 01-crd-tigerastatus.yaml" \
 #                       [tigera-operator]="00-namespace-tigera-operator.yaml 02-rolebinding-tigera-operator.yaml 02-role-tigera-operator.yaml 02-serviceaccount-tigera-operator.yaml 02-tigera-operator.yaml" )
