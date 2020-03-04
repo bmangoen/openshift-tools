@@ -2,7 +2,9 @@
 
 export CLUSTER_NAME=${CLUSTER_NAME:-"ocp-cluster"}
 export INSTALL_CONFIG_DIR=${INSTALL_CONFIG_DIR:-"$HOME/$CLUSTER_NAME"}
+
 export CALICO_MANIFESTS_URL=${CALICO_MANIFESTS_URL:-"https://docs.projectcalico.org/manifests/ocp"}
+export CALICO_INSTALLATION_CR_MANIFEST=${CALICO_INSTALLATION_CR_MANIFEST:-"${CALICO_MANIFESTS_URL}/01-cr-installation.yaml"}
 
 export OPENSHIFT_INSTALL_CMD=${OPENSHIFT_INSTALL_CMD:-"openshift-install"}
 
@@ -43,4 +45,4 @@ operator_manifests="00-namespace-tigera-operator.yaml 02-rolebinding-tigera-oper
 
 download:calico:manifests "${operator_directory}" "${operator_manifests}"
 
-curl -s ${CALICO_MANIFESTS_URL}/01-cr-installation.yaml -o ${INSTALL_CONFIG_DIR}/manifests/01-cr-installation.yaml
+curl -s ${CALICO_INSTALLATION_CR_MANIFEST} -o ${INSTALL_CONFIG_DIR}/manifests/01-cr-installation.yaml
