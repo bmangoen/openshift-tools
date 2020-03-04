@@ -1,0 +1,12 @@
+# Calico Installation Custom Resource example with using VxLAN encapsulation
+apiVersion: operator.tigera.io/v1
+kind: Installation
+metadata:
+  name: default
+spec:
+  variant: Calico
+  calicoNetwork:
+    ipPools:
+    # Using default OpenShift pod network
+    - cidr: 10.128.0.0/14
+      encapsulation: VXLAN
