@@ -7,10 +7,18 @@ CLOUD_PROVIDER="${1:?USAGE: generate-install-config.sh <cloud_provider>}"
 
 ## GCP specific vars
 : "${GCP_PROJECTID:=ocp-project}"
+: "${GCP_CONTROL_PLANE_VM_TYPE:=n1-standard-4}"
+: "${GCP_WORKER_VM_TYPE:=n1-standard-4}"
 
 ## Azure specific vars
 : "${AZURE_RESOURCE_GROUP:=ocp-rg}"
 : "${AZURE_NETWORK_RESOURCE_GROUP:=${AZURE_RESOURCE_GROUP}}"
+### Control plane vars
+: "${AZURE_CONTROL_PLANE_VM_TYPE:=Standard_D8s_v3}"
+: "${AZURE_CONTROL_PLANE_OS_DISK:=1024}"
+### Worker vars
+: "${AZURE_WORKER_VM_TYPE:=Standard_D2s_v3}"
+: "${AZURE_WORKER_OS_DISK:=128}"
 
 ## Common vars
 : "${BASE_DOMAIN:=ocp4.example.com}"
@@ -25,6 +33,10 @@ CLOUD_PROVIDER="${1:?USAGE: generate-install-config.sh <cloud_provider>}"
 
 : "${SSH_PUB_KEY_PATH:=$HOME/.ssh/id_rsa.pub}"
 : "${OCP_ADDITIONAL_TRUST_BUNDLE_PATH:=$HOME/additionaltrustbundle.cert}"
+: "${PUBLISH_METHOD:=Internal}"
+
+: "${SOURCE_REGISTRY_URL:=quay.io}"
+: "${SOURCE_REGISTRY_REPO:=openshift-release-dev}"
 
 : "${CAT:=cat}"
 : "${AWK:=awk}"
@@ -48,6 +60,68 @@ function get_default_region() {
   else
     echo "${REGION}"
   fi
+}
+
+function get_control_plane_platform() {
+  case ${CLOUD_PROVIDER} in
+    gcp)
+      if [ -z ${CONTROL_PLANE_VM_TYPE} ]; then
+        CONTROL_PLANE_VM_TYPE="${GCP_CONTROL_PLANE_VM_TYPE}"
+      fi
+      ${CAT} << EOF
+  platform:
+    gcp:
+      type: ${CONTROL_PLANE_VM_TYPE}
+EOF
+      ;;
+    azure)
+      if [ -z ${CONTROL_PLANE_VM_TYPE} ]; then
+        CONTROL_PLANE_VM_TYPE="${AZURE_CONTROL_PLANE_VM_TYPE}"
+      fi
+      ${CAT} << EOF
+  platform:
+    azure:
+      type: ${CONTROL_PLANE_VM_TYPE}
+      osDisk:
+        diskSizeGB: ${AZURE_CONTROL_PLANE_OS_DISK}
+EOF
+      ;;
+    *)
+      ${CAT} << EOF
+  platform: {}
+EOF
+  esac
+}
+
+function get_worker_platform() {
+  case ${CLOUD_PROVIDER} in
+    gcp)
+      if [ -z ${WORKER_VM_TYPE} ]; then
+        WORKER_VM_TYPE="${GCP_WORKER_VM_TYPE}"
+      fi
+      ${CAT} << EOF
+  platform:
+    gcp:
+      type: ${WORKER_VM_TYPE}
+EOF
+      ;;
+    azure)
+      if [ -z ${WORKER_VM_TYPE} ]; then
+        WORKER_VM_TYPE="${AZURE_WORKER_VM_TYPE}"
+      fi
+      ${CAT} << EOF
+  platform:
+    azure:
+      type: ${WORKER_VM_TYPE}
+      osDisk:
+        diskSizeGB: ${AZURE_WORKER_OS_DISK}
+EOF
+      ;;
+    *)
+      ${CAT} << EOF
+  platform: {}
+EOF
+  esac
 }
 
 function get_install_config_platform() {
@@ -93,10 +167,10 @@ function get_image_mirrors() {
 imageContentSources:
 - mirrors:
   - ${PRIVATE_REGISTRY_URL}/${PRIVATE_REGISTRY_REPO}
-  source: quay.io/openshift-release-dev/ocp-release
+  source: ${SOURCE_REGISTRY_URL}/${SOURCE_REGISTRY_REPO}/ocp-release
 - mirrors:
   - ${PRIVATE_REGISTRY_URL}/${PRIVATE_REGISTRY_REPO}
-  source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+  source: ${SOURCE_REGISTRY_URL}/${SOURCE_REGISTRY_REPO}/ocp-v4.0-art-dev
 EOF
   fi
 }
@@ -117,19 +191,19 @@ function ocp:install:config() {
 
     ${CAT} << EOF > ${CLUSTER_INSTALL_DIR}/install-config.yaml
 apiVersion: v1
+metadata:
+  name: ${CLUSTER_NAME}
 baseDomain: ${BASE_DOMAIN}
-compute:
-- hyperthreading: Enabled
-  name: worker
-  platform: {}
-  replicas: 3
 controlPlane:
   hyperthreading: Enabled
   name: master
-  platform: {}
+$(get_control_plane_platform)
   replicas: 3
-metadata:
-  name: ${CLUSTER_NAME}
+compute:
+- hyperthreading: Enabled
+  name: worker
+$(get_worker_platform)
+  replicas: 3
 networking:
   clusterNetwork:
   - cidr: ${CLUSTER_CIDR}
@@ -140,7 +214,7 @@ networking:
   - ${SERVICE_CIDR}
 platform:
 $(get_install_config_platform)
-publish: Internal
+publish: ${PUBLISH_METHOD}
 pullSecret: '${PULL_SECRET}'
 sshKey: |
   ${SSHPUBKEY}

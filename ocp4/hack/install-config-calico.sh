@@ -53,20 +53,29 @@ EOF
   curl -s ${CALICO_INSTALLATION_CR_MANIFEST} -o ${INSTALL_CONFIG_DIR}/manifests/01-cr-installation.yaml
 }
 
-# MAIN
+## MAIN BEGIN
 
 sed -i 's/OpenShiftSDN/Calico/' ${INSTALL_CONFIG_DIR}/install-config.yaml
 
 ${OPENSHIFT_INSTALL_CMD} create manifests --dir ${INSTALL_CONFIG_DIR}
+
+#TODO: get dynamically the manifests to download
 
 crds_directory="crds"
 crds_manifests="01-crd-installation.yaml 01-crd-tigerastatus.yaml"
 
 calico:download:manifests "${crds_directory}" "${crds_manifests}"
 
+kdd_directory="crds/calico/kdd"
+kdd_manifests="02-crd-bgpconfiguration.yaml 02-crd-bgppeer.yaml 02-crd-blockaffinity.yaml 02-crd-clusterinformation.yaml 02-crd-felixconfiguration.yaml 02-crd-globalnetworkpolicy.yaml 02-crd-globalnetworkset.yaml 02-crd-hostendpoint.yaml 02-crd-ipamblock.yaml 02-crd-ipamconfig.yaml 02-crd-ipamhandle.yaml 02-crd-ippool.yaml 02-crd-networkpolicy.yaml 02-crd-networkset.yaml"
+
+calico:download:manifests "${kdd_directory}" "${kdd_manifests}"
+
 operator_directory="tigera-operator"
-operator_manifests="00-namespace-tigera-operator.yaml 02-rolebinding-tigera-operator.yaml 02-role-tigera-operator.yaml 02-serviceaccount-tigera-operator.yaml 02-tigera-operator.yaml"
+operator_manifests="00-namespace-tigera-operator.yaml 02-rolebinding-tigera-operator.yaml 02-role-tigera-operator.yaml 02-serviceaccount-tigera-operator.yaml 02-configmap-calico-resources.yaml 02-configmap-tigera-install-script.yaml 02-tigera-operator.yaml"
 
 calico:download:manifests "${operator_directory}" "${operator_manifests}"
 
 calico:installation:customresource
+
+## MAIN END
