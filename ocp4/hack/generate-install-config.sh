@@ -35,6 +35,7 @@ CLOUD_PROVIDER="${1:?USAGE: generate-install-config.sh <cloud_provider>}"
 : "${OCP_ADDITIONAL_TRUST_BUNDLE_PATH:=$HOME/additionaltrustbundle.cert}"
 : "${PUBLISH_METHOD:=Internal}"
 
+: "${IS_REGISTRY_PROXY_CACHE:=false}"
 : "${SOURCE_REGISTRY_URL:=quay.io}"
 : "${SOURCE_REGISTRY_REPO:=openshift-release-dev}"
 
@@ -163,7 +164,17 @@ EOF
 
 function get_image_mirrors() {
   if [ ! -z ${PRIVATE_REGISTRY_URL} ] && [ ! -z ${PRIVATE_REGISTRY_REPO} ]; then
-    ${CAT} << EOF
+    # If the private registry can manage the proxy/cache registry of quay.io
+    if [ ! -z ${IS_REGISTRY_PROXY_CACHE} ] && [ ${IS_REGISTRY_PROXY_CACHE} = true ]; then
+      ${CAT} << EOF
+imageContentSources:
+- mirrors:
+  - ${PRIVATE_REGISTRY_URL}/${PRIVATE_REGISTRY_REPO}
+  source: ${SOURCE_REGISTRY_URL}/${SOURCE_REGISTRY_REPO}
+EOF
+      return
+    else
+      ${CAT} << EOF
 imageContentSources:
 - mirrors:
   - ${PRIVATE_REGISTRY_URL}/${PRIVATE_REGISTRY_REPO}
@@ -172,6 +183,7 @@ imageContentSources:
   - ${PRIVATE_REGISTRY_URL}/${PRIVATE_REGISTRY_REPO}
   source: ${SOURCE_REGISTRY_URL}/${SOURCE_REGISTRY_REPO}/ocp-v4.0-art-dev
 EOF
+    fi
   fi
 }
 
