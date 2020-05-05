@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-: "${CLUSTER_NAME:-"ocp-cluster"}"
-: "${INSTALL_CONFIG_DIR:-"$HOME/$CLUSTER_NAME"}"
+: "${CLUSTER_NAME:="ocp-cluster"}"
+: "${INSTALL_CONFIG_DIR:="$HOME/$CLUSTER_NAME"}"
 
-: "${CALICO_MANIFESTS_URL:-"https://docs.projectcalico.org/manifests/ocp"}"
+: "${CALICO_MANIFESTS_URL:="https://docs.projectcalico.org/manifests/ocp"}"
 
 : "${CALICO_REGISTRY:=quay.io}"
 
