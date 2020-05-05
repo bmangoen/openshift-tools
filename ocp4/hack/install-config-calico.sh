@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-export CLUSTER_NAME=${CLUSTER_NAME:-"ocp-cluster"}
-export INSTALL_CONFIG_DIR=${INSTALL_CONFIG_DIR:-"$HOME/$CLUSTER_NAME"}
+: "${CLUSTER_NAME:-"ocp-cluster"}"
+: "${INSTALL_CONFIG_DIR:-"$HOME/$CLUSTER_NAME"}"
 
-export CALICO_MANIFESTS_URL=${CALICO_MANIFESTS_URL:-"https://docs.projectcalico.org/manifests/ocp"}
-export CALICO_INSTALLATION_CR_MANIFEST=${CALICO_INSTALLATION_CR_MANIFEST:-"${CALICO_MANIFESTS_URL}/01-cr-installation.yaml"}
+: "${CALICO_MANIFESTS_URL:-"https://docs.projectcalico.org/manifests/ocp"}"
+
+: "${CALICO_REGISTRY:=quay.io}"
 
 : "${SED:=sed}"
 : "${CAT:=cat}"
@@ -32,25 +33,29 @@ function calico:download:manifests() {
   done
 }
 
-function calico:installation:customresource() {
+function get_calico_network_encapsulation() {
   if [ ! -z ${CALICO_VXLAN_CLUSTER_CIDR} ]
     then
-      ${CAT} << EOF > ${INSTALL_CONFIG_DIR}/manifests/01-cr-installation.yaml
+      ${CAT} << EOF
+  calicoNetwork:
+    ipPools:
+    - cidr: ${CALICO_VXLAN_CLUSTER_CIDR}
+      encapsulation: VXLAN
+EOF
+  fi
+}
+
+function calico:installation:customresource() {
+  ${CAT} << EOF > ${INSTALL_CONFIG_DIR}/manifests/01-cr-installation.yaml
 apiVersion: operator.tigera.io/v1
 kind: Installation
 metadata:
   name: default
 spec:
   variant: Calico
-  calicoNetwork:
-    ipPools:
-    - cidr: ${CALICO_VXLAN_CLUSTER_CIDR}
-      encapsulation: VXLAN
+  registry: ${CALICO_REGISTRY}
+$(get_calico_network_encapsulation)
 EOF
-      return
-  fi
-  
-  curl -s ${CALICO_INSTALLATION_CR_MANIFEST} -o ${INSTALL_CONFIG_DIR}/manifests/01-cr-installation.yaml
 }
 
 ## MAIN BEGIN
