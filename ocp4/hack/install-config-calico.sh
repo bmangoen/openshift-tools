@@ -72,7 +72,7 @@ crds_manifests="01-crd-installation.yaml 01-crd-tigerastatus.yaml"
 calico:download:manifests "${crds_directory}" "${crds_manifests}"
 
 kdd_directory="crds/calico/kdd"
-kdd_manifests="02-crd-bgpconfiguration.yaml 02-crd-bgppeer.yaml 02-crd-blockaffinity.yaml 02-crd-clusterinformation.yaml 02-crd-felixconfiguration.yaml 02-crd-globalnetworkpolicy.yaml 02-crd-globalnetworkset.yaml 02-crd-hostendpoint.yaml 02-crd-ipamblock.yaml 02-crd-ipamconfig.yaml 02-crd-ipamhandle.yaml 02-crd-ippool.yaml 02-crd-networkpolicy.yaml 02-crd-networkset.yaml"
+kdd_manifests="02-crd-bgpconfiguration.yaml 02-crd-bgppeer.yaml 02-crd-blockaffinity.yaml 02-crd-clusterinformation.yaml 02-crd-felixconfiguration.yaml 02-crd-globalnetworkpolicy.yaml 02-crd-globalnetworkset.yaml 02-crd-hostendpoint.yaml 02-crd-ipamblock.yaml 02-crd-ipamconfig.yaml 02-crd-ipamhandle.yaml 02-crd-ippool.yaml 02-crd-kubecontrollersconfiguration.yaml 02-crd-networkpolicy.yaml 02-crd-networkset.yaml"
 
 calico:download:manifests "${kdd_directory}" "${kdd_manifests}"
 
@@ -82,5 +82,7 @@ operator_manifests="00-namespace-tigera-operator.yaml 02-rolebinding-tigera-oper
 calico:download:manifests "${operator_directory}" "${operator_manifests}"
 
 calico:installation:customresource
+
+sed -ie 's/image\:\ calico\/ctl\:/image\:\ quay.io\/calico\/ctl\:/' ${INSTALL_CONFIG_DIR}/manifests/02-tigera-operator.yaml
 
 ## MAIN END
